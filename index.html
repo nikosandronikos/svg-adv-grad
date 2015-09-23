@@ -1,0 +1,1261 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  
+  
+  <title>SVG Advanced Gradients</title>
+  
+  
+  <link href="../default.css" rel="stylesheet" type="text/css">
+  
+  
+  <style>
+  body {
+    background: url("https://www.w3.org/StyleSheets/TR/logo-unofficial.png") top left no-repeat white;
+    background-attachment: fixed;
+    color: black;
+    font-family: sans-serif;
+    margin: 0 auto;
+    max-width: 50em;
+    padding: 2em 1em 2em 70px;
+  }
+  :link { color: #00C; background: transparent }
+  :visited { color: #609; background: transparent }
+  a[href]:active { color: #C00; background: transparent }
+  a[href]:hover { background: #ffa }
+
+  a[href] img { border-style: none }
+
+  h1, h2, h3, h4, h5, h6 { text-align: left }
+  h1, h2, h3 { color: #005A9C; }
+  h1 { font: 170% sans-serif }
+  h2 { font: 140% sans-serif }
+  h3 { font: 120% sans-serif }
+  h4 { font: bold 100% sans-serif }
+  h5 { font: italic 100% sans-serif }
+  h6 { font: small-caps 100% sans-serif }
+
+  .hide { display: none }
+
+  div.head { margin-bottom: 1em }
+  div.head h1 { margin-top: 2em; clear: both }
+  div.head table { margin-left: 2em; margin-top: 2em }
+
+  p.copyright { font-size: small }
+  p.copyright small { font-size: small }
+
+  pre { margin-left: 2em }
+  dt { font-weight: bold }
+
+  ul.toc, ol.toc {
+    list-style: none;
+  }
+  </style>
+  
+
+  <meta content="Bikeshed 1.0.0" name="generator">
+  <style>
+/* Bikeshed doesn’t seem to have any nice styling for personal specs */
+.definition-table {
+    background: hsl(243, 80%, 92%);
+    width: 100%;
+    border-left: .5rem solid hsl(243, 80%, 72%);
+}
+
+.definition-table th {
+    text-align: right;
+    padding-right: 1em;
+}
+
+.definition-table td {
+    width: 80%;
+    text-align: left;
+}
+
+.issue, .note, .example, .why, .advisement, blockquote {
+    padding: .5em;
+    border: .5em;
+    border-left-style: solid;
+    page-break-inside: avoid;
+    margin-bottom: 1em;
+}
+
+.example:not(.no-marker)::before {
+    content: "EXAMPLE";
+    content: "EXAMPLE " counter(exampleno);
+}
+.example::before, .example > .marker {
+    color: #827017;
+    font-family: sans-serif;
+    min-width: 7.5em;
+    display: block;
+}
+
+.example {
+    border-color: #E0CB52;
+    background: #FCFAEE;
+    counter-increment: exampleno;
+    overflow: auto;
+    clear: both;
+}
+.issue:not(.no-marker)::before {
+    content: "ISSUE " counter(issue);
+    padding-right: 1em;
+}
+.issue::before, .issue > .marker {
+    color: #AE1E1E;
+}
+
+.issue {
+    border-color: #E05252;
+    background: #FBE9E9;
+    counter-increment: issue;
+    overflow: auto;
+}
+
+.note, .why {
+    border-color: #52E052;
+    background: #E9FBE9;
+    overflow: auto;
+}
+</style>
+  
+
+
+
+ </head>
+ 
+
+ <body class="h-entry">
+
+  <div class="head">
+  
+   <p data-fill-with="logo"></p>
+  
+   <h1 class="p-name no-ref" id="title">SVG Advanced Gradients</h1>
+  
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Unofficial Proposal Draft,
+    <time class="dt-updated" datetime="2015-08-06">6 August 2015</time></span></h2>
+  
+   <div data-fill-with="spec-metadata">
+    <dl>
+     <dt>Issue Tracking:
+     <dd><a href="#issues-index">Inline In Spec</a>
+     <dt class="editor">Editor:
+     <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:nikos.andronikos@cisra.canon.com.au">Nikos Andronikos</a> (<span class="p-org org">Canon Inc/CiSRA</span>)
+    </dl>
+   </div>
+  
+   <div data-fill-with="warning"></div>
+  
+   <p class="copyright" data-fill-with="copyright">Copyright © Canon Inc. 2015.
+</p>
+  
+   <hr title="Separator for header">
+</div>
+
+
+  <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
+
+  <div class="p-summary" data-fill-with="abstract">
+   <p>This proposed module for SVG, defines diffusion curves, a primitive for creating advanced gradient fills.</p>
+</div>
+
+
+  <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
+
+  <div data-fill-with="status">
+   <p>
+	This is an unofficial draft.
+	It is provided for discussion only and may change at any moment.
+	Its publication here does not imply endorsement of its contents by W3C. 
+	Don’t cite this document other than as work in progress.</p></div>
+
+  <div data-fill-with="at-risk"></div>
+
+
+  <h2 class="no-num no-toc no-ref heading settled" id="contents"><span class="content">Table of Contents</span></h2>
+
+  <div data-fill-with="table-of-contents" role="navigation">
+   <ul class="toc" role="directory">
+    <li><a href="#introduction"><span class="secno">1</span> <span class="content">Introduction</span></a>
+    <li><a href="#diffusioncurves"><span class="secno">2</span> <span class="content">Diffusion Curves</span></a>
+     <ul class="toc">
+      <li><a href="#usecases"><span class="secno">2.1</span> <span class="content">Use Cases</span></a>
+      <li><a href="#dcpatches"><span class="secno">2.2</span> <span class="content">Diffusion Curve Patches</span></a>
+      <li><a href="#specify_dcpatches"><span class="secno">2.3</span> <span class="content">Specifying Diffusion Curve Patches</span></a>
+       <ul class="toc">
+        <li><a href="#dcpatch_values"><span class="secno">2.3.1</span> <span class="content">Values</span></a>
+        <li><a href="#dcpatch_element"><span class="secno">2.3.2</span> <span class="content">dcpatch element</span></a>
+        <li><a href="#dcpath_element"><span class="secno">2.3.3</span> <span class="content">dcpath element</span></a>
+        <li><a href="#dcstop_element"><span class="secno">2.3.4</span> <span class="content">dcstop element</span></a>
+       </ul>
+      <li><a href="#rendering_dcpatches"><span class="secno">2.4</span> <span class="content">Rendering Diffusion Curve Patches</span></a>
+       <ul class="toc">
+        <li><a href="#render_overview"><span class="secno">2.4.1</span> <span class="content">Overview of the rendering process </span></a>
+        <li><a href="#pixel_constraint_image"><span class="secno">2.4.2</span> <span class="content">Generate Constraint Pixel Image</span></a>
+        <li><a href="#curve_constraint_pixels"><span class="secno">2.4.3</span> <span class="content">Calculate pixel values for Curve Constraint Pixels</span></a>
+        <li><a href="#boundary_constraint_pixels"><span class="secno">2.4.4</span> <span class="content">Calculate pixel values for Boundary Constraint Pixels</span></a>
+        <li><a href="#downsample"><span class="secno">2.4.5</span> <span class="content">Downsample and thicken constraints</span></a>
+        <li><a href="#upsample"><span class="secno">2.4.6</span> <span class="content">Upsample with Laplacian smoothing for unconstrained pixels</span></a>
+       </ul>
+     </ul>
+    <li><a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
+     <ul class="toc">
+      <li><a href="#index-defined-here"><span class="secno"></span> <span class="content">Terms defined by this specification</span></a>
+      <li><a href="#index-defined-elsewhere"><span class="secno"></span> <span class="content">Terms defined by reference</span></a>
+     </ul>
+    <li><a href="#references"><span class="secno"></span> <span class="content">References</span></a>
+     <ul class="toc">
+      <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
+     </ul>
+    <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
+   </ul></div>
+
+
+  <main>
+
+
+   <h2 class="heading settled" data-level="1" id="introduction"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#introduction"></a></h2>
+Advanced gradients are two dimensional images comprised of smooth transitions
+and sharp discontinuities. 
+There are a number of methods for defining advanced gradients, such as:
+
+   <ul>
+    <li data-md="">
+     <p>Mesh based gradients</p>
+     
+
+    <li data-md="">
+     <p>Diffusion curves</p>
+     
+</ul>
+
+   <p>Each method has its own advantages. Mesh based gradients are typically very
+fast to render, but the markup to describe them is verbose and makes animation
+difficult.
+Diffusion curves on the other hand are a compact representation based on the 
+traditional artist’s workflow of sketching outlines and filling with colour.</p>
+
+
+   <div class="example" id="example-b3a7ddc0"><a class="self-link" href="#example-b3a7ddc0"></a>
+
+    <pre>A diffusion curve image of a star (right), and the curves required to create
+it (left).
+</pre>
+
+    <p><img src="examples/star.png"></p>
+</div>
+
+
+   <h2 class="heading settled" data-level="2" id="diffusioncurves"><span class="secno">2. </span><span class="content">Diffusion Curves</span><a class="self-link" href="#diffusioncurves"></a></h2>
+Diffusion curves are a compact representation for specifying advanced gradient
+fills.
+A diffusion curve is a continuous series of colour constraints, where the colour
+constraint sets a colour that is to be diffused outwards from either the left,
+the right, or both sides of the curve. The colours diffusing outwards from a
+curve mix with other colours diffusing outwards from other diffusion curves,
+to create a gradient image. In this way, many diffusion curves may work
+together to create a complex image.
+
+
+   <h3 class="heading settled" data-level="2.1" id="usecases"><span class="secno">2.1. </span><span class="content">Use Cases</span><a class="self-link" href="#usecases"></a></h3>
+Where would diffusion curves provide benefits to the web platform?
+
+
+   <ul>
+    <li data-md="">
+     <p>Icons - a particularly good use case given the small size and requirements
+for scalability.</p>
+     
+
+    <li data-md="">
+     <p>Complex shading - as found in comics and cartoons (e.g. Marvel comics)</p>
+     
+
+    <li data-md="">
+     <p>Photograph vectorisation - scalable representation of natural images</p>
+     
+
+    <li data-md="">
+     <p>Conical gradients and other gradient primitives not natively supported</p>
+     
+
+    <li data-md="">
+     <p>Animated advanced gradients - with a compact representation, diffusion
+curves are easily animated compared to meshes</p>
+     
+
+    <li data-md="">
+     <p>A higher level representation for Mesh Based Gradients benefits authors</p>
+     
+</ul>
+
+   <h3 class="heading settled" data-level="2.2" id="dcpatches"><span class="secno">2.2. </span><span class="content">Diffusion Curve Patches</span><a class="self-link" href="#dcpatches"></a></h3>
+
+
+   <p>Diffusion curve patches are a paint server. Their use is similar to other
+SVG gradients (linear and radial).</p>
+
+
+   <p>A patch is rectangular and may include one or more diffusion curves paths.
+Each diffusion curve path is described using standard SVG path syntax and may 
+have one or more stops that specify
+color constraints at positions along the path. Colour constraints may apply
+to either side of the path (left or right) or both sides.</p>
+
+
+   <p>The rendered contents of the patch comprise smooth transitions of colour between
+the diffusion curve paths.</p>
+
+
+   <h3 class="heading settled" data-level="2.3" id="specify_dcpatches"><span class="secno">2.3. </span><span class="content">Specifying Diffusion Curve Patches</span><a class="self-link" href="#specify_dcpatches"></a></h3>
+
+   <h4 class="heading settled" data-level="2.3.1" id="dcpatch_values"><span class="secno">2.3.1. </span><span class="content">Values</span><a class="self-link" href="#dcpatch_values"></a></h4>
+
+   <dl>
+
+
+    <dt><dfn data-dfn-type="dfn" data-noexport="" id="color_profile" value-for="color-profile">color-profile<a class="self-link" href="#color_profile"></a></dfn>
+
+    <dd>
+    <dfn data-dfn-for="color-profile" data-dfn-type="grammar" data-export="" id="grammardef-path-pos-dc-constraint-set">[&lt;path-pos>? &lt;dc-constraint-set>]#<a class="self-link" href="#grammardef-path-pos-dc-constraint-set"></a></dfn><br>
+    The color-profile attribute utilises a command syntax for specifying colour 
+    constraints at positions along the path.<br>
+    In the grammar for color-profile, path-pos is optional.
+    It may be omitted for some entries or for all entries.
+
+
+     <p>Any set of color-profile entries without a path-pos are placed equidistant
+    along a sub-section of the path.</p>
+
+
+     <p>That sub-section is defined as the section of path from the previous
+    color-profile entry with a path-pos, or the start of the path if none
+    present, to the next color-profile entry with a path-pos, or the end of the
+    path if none present.</p>
+
+
+     <p>The color-profile entries are placed such that there will be one
+    color-profile entry at the start of the sub-path and one color-profile 
+    entry at the end of the sub-path, with all other color-profile entries
+    placed evenly between.</p>
+
+    
+     <div class="example" id="example-c89568fb"><a class="self-link" href="#example-c89568fb"></a>
+        
+      <pre>color-profile="LR green, LR red, LR red, LR blue"
+</pre>
+      
+
+      <p><img src="examples/path-pos-example-1.svg">
+        No color-profile entries have a path-pos. The sub-path is equivalent
+        to the full path. The color-profile entries are placed equidistant
+        along the path, with the first and last falling on the first and 
+        last points of the path respectively.</p>
+      
+    
+     </div>
+
+    
+     <div class="example" id="example-1856fafa"><a class="self-link" href="#example-1856fafa"></a>
+        
+      <pre>color-profile="LR green, 40% LR purple, LR red, LR red, 60% LR cyan, LR blue"
+</pre>
+      
+
+      <p><img src="examples/path-pos-example-2.svg">
+        With two color-profile entries that have a path-pos, this path is
+        sub-divided into three sub-paths.</p>
+      
+
+
+      <p>The first sub-path extends from the start point of the path to the
+        first color-profile entry with a path-pos (purple).
+        The first color-profile entry (green) is placed on the start point
+        of the sub-path as this results in the entries being placed equidistant
+        and maintains the rule that a color-profile entry must be placed at the
+        start and end points of the sub-path.</p>
+      
+
+
+      <p>Likewise for the third sub-path - from the fifth color-profile entry
+        (cyan) to the end point of the path.</p>
+      
+
+
+      <p>The middle sub-path extends from the purple to the cyan color-profile
+        entries. The purple and cyan entries occupy the start and end points
+        of the sub-path, so the red entries are placed between them at positions
+        that result in the four color-profile entries being equidistant.</p>
+      
+    
+     </div>
+
+
+
+    <dt><dfn data-dfn-type="dfn" data-noexport="" id="dc_constraint_set" value-for="dc-constraint-set">dc-constraint-set<a class="self-link" href="#dc_constraint_set"></a></dfn>
+
+    <dd>
+    <dfn data-dfn-for="dc-constraint-set" data-dfn-type="grammar" data-export="" id="grammardef-l-color-color--r-color-color--lr-color-color">
+        [[L &lt;color> &lt;color>?] || [R &lt;color> &lt;color>?]] | [LR? &lt;color> &lt;color>?]
+    <a class="self-link" href="#grammardef-l-color-color--r-color-color--lr-color-color"></a></dfn>
+
+
+     <p>Specifies a set of color constraints that fall upon a position of the path.</p>
+
+
+     <p>Color constraints may be specified independently on the left and right hand
+    sides of the path, or the color constraint may be specified to affect both
+    sides of the path.</p>
+
+
+     <p>Normally, colors transition smoothly along the path from one color
+    constraint to the next.
+    If multiple colors are specified at one position, an immediate transition
+    from the first to the second color occurs.</p>
+
+
+
+    <dt><dfn data-dfn-type="dfn" data-noexport="" id="path_pos" value-for="color-profile">path-pos<a class="self-link" href="#path_pos"></a></dfn>
+
+    <dd>
+<dfn data-dfn-for="path-pos" data-dfn-type="grammar" data-export="" id="grammardef-sub-number-seg-number-offset">[sub &lt;number>]? [seg &lt;number>]? &lt;offset>?<a class="self-link" href="#grammardef-sub-number-seg-number-offset"></a></dfn>
+
+
+     <p>The sub and seg commands define a sub-section of the path that offset is
+relative to.  The default values for sub and seg are none. The default 
+value for offset is 0 (zero). Valid values for offset are between 0 and 1 
+inclusive or between 0% and 100% inclusive.</p>
+
+     <dl>
+    
+      <dt>sub=none, seg=none
+    
+      <dd>offset is an offset within the entire computed length of the path.
+    
+      <dt>sub=&lt;number>
+    
+      <dd>offset is an offset within the sub-path referenced
+        by the zero based index immediately following the command.
+    
+    
+      <dt>seg=&lt;number>
+    
+      <dd>offset is an offset within the segment referenced by the zero based 
+        index immediately following the command.
+    
+    
+      <dt>sub=&lt;number>, seg=&lt;number>
+    
+      <dd>offset is an offset within the segment referenced by the zero based 
+        index immediately following the sub command. The zero segment is the first 
+        segment of the sub-path referenced by the zero based index immediately 
+        following the sub command.
+    
+</dl>
+
+
+
+    <dt><dfn data-dfn-type="dfn" data-noexport="" id="offset" value-for="offset">offset<a class="self-link" href="#offset"></a></dfn>
+
+    <dd><dfn data-dfn-for="offset" data-dfn-type="grammar" data-export="" id="grammardef-number--percentage">&lt;number> | &lt;percentage><a class="self-link" href="#grammardef-number--percentage"></a></dfn>
+</dl>
+
+
+   <h4 class="heading settled" data-level="2.3.2" id="dcpatch_element"><span class="secno">2.3.2. </span><span class="content">dcpatch element</span><a class="self-link" href="#dcpatch_element"></a></h4>
+
+   <table class="definition-table elementdef">
+    <tbody>
+     <tr>
+      <th>Name:
+      <td><dfn data-dfn-type="element" data-export="" id="elementdef-dcpatch">dcpatch<a class="self-link" href="#elementdef-dcpatch"></a></dfn>
+     <tr>
+      <th>Categories:
+      <td><a data-link-type="dfn" href="https://svgwg.org/svg2-draft/painting.html#TermPaintServerElement">Paint server elements</a>
+     <tr>
+      <th>Contexts:
+      <td>defs element
+     <tr>
+      <th>Content model:
+      <td>dcPath, dcStop
+     <tr>
+      <th>Attributes:
+      <td>
+       <ul>
+        <li><a data-link-type="element-attr" href="#element-attrdef-dcpatch-id">id</a>
+        <li><a data-link-type="element-attr" href="#element-attrdef-dcpatch-patchunits">patchUnits</a>
+        <li><a data-link-type="element-attr" href="#element-attrdef-dcpatch-boundary-colors">boundary-colors</a>
+        <li><a data-link-type="element-attr" href="#element-attrdef-dcpatch-boundary">boundary</a>
+        <li><a data-link-type="element-attr" href="#element-attrdef-dcpatch-patchtransform">patchTransform</a>
+       </ul>
+     <tr>
+      <th>DOM Interfaces:
+      <td><a class="idl-code" data-link-type="interface" href="#dcpatchelement">dcPatchElement</a></table>
+
+
+   <p class="issue" id="issue-c3cc9297"><a class="self-link" href="#issue-c3cc9297"></a> Category should include Gradient elements - bikeshed looks to be missing this defn</p>
+
+
+   <dl>
+    <dt data-md="">
+     <p><dfn data-dfn-for="dcpatch" data-dfn-type="element-attr" data-export="" id="element-attrdef-dcpatch-id">id<a class="self-link" href="#element-attrdef-dcpatch-id"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p>Identifier for referencing the patch</p>
+     
+
+    <dt data-md="">
+     <p><dfn data-dfn-for="dcpatch" data-dfn-type="element-attr" data-export="" id="element-attrdef-dcpatch-patchunits">patchUnits<a class="self-link" href="#element-attrdef-dcpatch-patchunits"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p><dfn data-dfn-for="patchUnits" data-dfn-type="grammar" data-export="" id="grammardef-userspaceonuse--objectboundingbox">userSpaceOnUse | objectBoundingBox<a class="self-link" href="#grammardef-userspaceonuse--objectboundingbox"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p>Defines the co-ordinate system within the patch.</p>
+     
+
+     <dl>
+      <dt data-md="">
+       <p><dfn data-dfn-type="dfn" data-noexport="" id="userspaceonuse" value-for="patchUnits">userSpaceOnUse<a class="self-link" href="#userspaceonuse"></a></dfn></p>
+       
+
+      <dd data-md="">
+       <p>userSpaceOnUse indicates that the user co-ordinate system in place at
+ the time the fill is used.</p>
+       
+
+      <dt data-md="">
+       <p><dfn data-dfn-type="dfn" data-noexport="" id="objectboundingbox" value-for="patchUnits">objectBoundingBox<a class="self-link" href="#objectboundingbox"></a></dfn></p>
+       
+
+      <dd data-md="">
+       <p>objectBoundingBox essentially makes the co-ordinate system (0,0)-(1,1).
+This could further be transformed with gradientTransform.</p>
+       
+</dl>
+    <dt data-md="">
+     <p><dfn data-dfn-for="dcpatch" data-dfn-type="element-attr" data-export="" id="element-attrdef-dcpatch-boundary">boundary<a class="self-link" href="#element-attrdef-dcpatch-boundary"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p><dfn data-dfn-for="boundary" data-dfn-type="grammar" data-export="" id="grammardef-rect--inherit">&lt;rect> | inherit<a class="self-link" href="#grammardef-rect--inherit"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p>This rectangle defines the extent of the diffusion curve patch within the
+co-ordinate space defined by patchUnits.
+This rectangle functions as a clip on the diffusion curve geometry.
+There are no pixels rendered outside this rectangle.
+The default value depends on the value of patchUnits. If
+patchUnits=userspaceonuse, the default value is the tight bounding box
+of the shape being filled. If patchUnits=objectboundingbox, the default
+value is a rectangle positioned at 0,0, with a width and height of one.</p>
+     
+
+     <dl>
+      <dt data-md="">
+       <p><dfn class="css" data-dfn-type="type" data-export="" id="typedef-rect" value-for="boundary">&lt;rect><a class="self-link" href="#typedef-rect"></a></dfn></p>
+       
+
+      <dd data-md="">
+       <p>The boundary is a rectangle in the co-ordinate space defined by patchUnits</p>
+       
+
+      <dt data-md="">
+       <p><dfn data-dfn-type="dfn" data-noexport="" id="inherit" value-for="boundary">inherit<a class="self-link" href="#inherit"></a></dfn></p>
+       
+
+      <dd data-md="">
+       <p>The boundary curve is the shape being filled. The colour constraints are
+mapped onto this shape. If patchUnits=objectboundingbox, the shape is
+transformed to fit within the co-ordinate space of the patch.</p>
+       
+</dl>
+    <dt data-md="">
+     <p><dfn data-dfn-for="dcpatch" data-dfn-type="element-attr" data-export="" id="element-attrdef-dcpatch-boundary-colors">boundary-colors<a class="self-link" href="#element-attrdef-dcpatch-boundary-colors"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p><dfn class="css" data-dfn-type="type" data-export="" id="typedef-color-profile" value-for="boundary-colors">&lt;color-profile><a class="self-link" href="#typedef-color-profile"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p>Specifies the colour constraints along the boundary shape.
+The outside of the colour profile is ignored - the colour on the outside of
+the boundary is always rgba(0,0,0,0).
+If the dcPatch element has child dcStop elements then these set colour
+constraints on the boundary in addition to any set in the color-profile.</p>
+     
+
+    <dt data-md="">
+     <p><dfn data-dfn-for="dcpatch" data-dfn-type="element-attr" data-export="" id="element-attrdef-dcpatch-patchtransform">patchTransform<a class="self-link" href="#element-attrdef-dcpatch-patchtransform"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p><dfn class="css" data-dfn-type="type" data-export="" id="typedef-transform-list" value-for="patchTransform">&lt;transform-list><a class="self-link" href="#typedef-transform-list"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p>Contains the definition of an optional additional transformation from the
+gradient coordinate system onto the target coordinate system 
+(i.e., userspaceonuse or objectboundingbox). This additional
+transformation matrix is post-multiplied to (i.e., inserted to the right of)
+any previously defined transformations, including the implicit
+transformation necessary to convert from object bounding box units to local
+coordinate system.</p>
+     
+</dl>
+
+   <p><dfn class="idl-code" data-dfn-for="dcpatch" data-dfn-type="interface" data-export="" id="dcpatchelement">dcPatchElement<a class="self-link" href="#dcpatchelement"></a></dfn> Interface
+Note: todo interface.</p>
+
+
+   <div class="example" id="example-eba59786"><a class="self-link" href="#example-eba59786"></a>
+This example shows the mapping of the dcpatch co-ordinate space when
+patchUnits=objectBoundingBox.
+
+    <pre>&lt;svg viewBox="0 0 100 100">
+  &lt;defs>
+    &lt;dcpatch id="dc1" boundary="inherit" patchUnits="objectBoundingBox">
+        * various dcPath elements that define the internal shading for
+        * the star are defined here
+    &lt;dcpatch/>
+  &lt;/defs>
+  &lt;!-- filled star -->
+  &lt;polygon points="..." fill="url(#dc1)" />
+&lt;/svg>
+</pre>
+
+    <p>The dashed rectangle represents the bounds of the dcpatch, the black marked
+points are co-ordinates within the dcpatch.
+The blue rectangle and marked points represent the svg viewbox and points within
+the svg user space.
+<img src="examples/object-bounds.svg"></p>
+</div>
+
+
+   <h4 class="heading settled" data-level="2.3.3" id="dcpath_element"><span class="secno">2.3.3. </span><span class="content">dcpath element</span><a class="self-link" href="#dcpath_element"></a></h4>
+
+   <table class="definition-table elementdef">
+    <tbody>
+     <tr>
+      <th>Name:
+      <td><dfn data-dfn-type="element" data-export="" id="elementdef-dcpath">dcpath<a class="self-link" href="#elementdef-dcpath"></a></dfn>
+     <tr>
+      <th>Categories:
+      <td><a data-link-type="dfn" href="https://svgwg.org/svg2-draft/painting.html#TermPaintServerElement">Paint Server elements</a>
+     <tr>
+      <th>Contexts:
+      <td>dcpatch element, defs element
+     <tr>
+      <th>Content model:
+      <td>dcstop element
+     <tr>
+      <th>Attributes:
+      <td>
+       <ul>
+        <li><a data-link-type="element-attr" href="#element-attrdef-dcpath-id">id</a>
+        <li><a data-link-type="element-attr" href="#element-attrdef-dcpath-d">d</a>
+        <li><a data-link-type="element-attr" href="#element-attrdef-dcpath-color-profile">color-profile</a>
+       </ul>
+     <tr>
+      <th>DOM Interfaces:
+      <td><a class="idl-code" data-link-type="interface" href="#dcstopelement">dcStopElement</a></table>
+
+   <p class="note" role="note">Note: dcpath is added to the content model of the defs element.</p>
+
+
+   <p>The colour constraints along each side of the dcPath must be smoothly
+interpolated.
+Each dc-constraint-set allows for specification of the colour stop on the left 
+and right side of the path. The left and right are designated either using the 
+slash syntax or the LR syntax.
+If the optional second colour of a side is given, the two colour constraints
+occur at the same position, marking a sharp transition from the 1st to the 2nd
+colour at that point along the path.</p>
+
+
+   <dl>
+    <dt data-md="">
+     <p><dfn data-dfn-for="dcpath" data-dfn-type="element-attr" data-export="" id="element-attrdef-dcpath-id">id<a class="self-link" href="#element-attrdef-dcpath-id"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p>Identifier for referencing the path</p>
+     
+
+    <dt data-md="">
+     <p><dfn data-dfn-for="dcpath" data-dfn-type="element-attr" data-export="" id="element-attrdef-dcpath-d">d<a class="self-link" href="#element-attrdef-dcpath-d"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p><dfn data-dfn-for="d" data-dfn-type="grammar" data-export="" id="grammardef-svg-path">svg-path<a class="self-link" href="#grammardef-svg-path"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p>lacuna value:  (none)<br> Defines a diffusion curve. See path data.<br> A value of (none) means that this path is ignored.</p>
+     
+
+    <dt data-md="">
+     <p><dfn data-dfn-for="dcpath" data-dfn-type="element-attr" data-export="" id="element-attrdef-dcpath-color-profile">color-profile<a class="self-link" href="#element-attrdef-dcpath-color-profile"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p>The color-profile attribute utilises a command syntax for specifying colour constraints along the path.</p>
+     
+</dl>
+
+   <h4 class="heading settled" data-level="2.3.4" id="dcstop_element"><span class="secno">2.3.4. </span><span class="content">dcstop element</span><a class="self-link" href="#dcstop_element"></a></h4>
+
+   <table class="definition-table elementdef">
+    <tbody>
+     <tr>
+      <th>Name:
+      <td><dfn data-dfn-type="element" data-export="" id="elementdef-dcstop">dcstop<a class="self-link" href="#elementdef-dcstop"></a></dfn>
+     <tr>
+      <th>Categories:
+      <td><a data-link-type="dfn" href="https://svgwg.org/svg2-draft/painting.html#TermPaintServerElement">Paint Server elements</a>
+     <tr>
+      <th>Contexts:
+      <td>dcpath element
+     <tr>
+      <th>Content model:
+      <td>empty
+     <tr>
+      <th>Attributes:
+      <td>
+       <ul>
+        <li><a data-link-type="element-attr" href="#element-attrdef-dcstop-id">id</a>
+        <li><a data-link-type="element-attr" href="#element-attrdef-dcstop-offset">offset</a>
+        <li><a data-link-type="element-attr" href="#element-attrdef-dcstop-subpath">subpath</a>
+        <li><a data-link-type="element-attr" href="#element-attrdef-dcstop-segment">segment</a>
+        <li><a data-link-type="element-attr" href="#element-attrdef-dcstop-colors">colors</a>
+       </ul>
+     <tr>
+      <th>DOM Interfaces:
+      <td><a class="idl-code" data-link-type="interface" href="#dcstopelement">dcStopElement</a></table>
+
+
+   <dl>
+    <dt data-md="">
+     <p><dfn data-dfn-for="dcstop" data-dfn-type="element-attr" data-export="" id="element-attrdef-dcstop-id">id<a class="self-link" href="#element-attrdef-dcstop-id"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p>Identifier for referencing the stop</p>
+     
+
+    <dt data-md="">
+     <p><dfn data-dfn-for="dcstop" data-dfn-type="element-attr" data-export="" id="element-attrdef-dcstop-offset">offset<a class="self-link" href="#element-attrdef-dcstop-offset"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p>Offset along the path that the stop is placed at.  If two stops have the same offset, the second stop over-rides the first.  If a sharp transition along the path is desired, then two colour values should be given for the stop.</p>
+     
+
+    <dt data-md="">
+     <p><dfn data-dfn-for="dcstop" data-dfn-type="element-attr" data-export="" id="element-attrdef-dcstop-subpath">subpath<a class="self-link" href="#element-attrdef-dcstop-subpath"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p><dfn data-dfn-for="subpath" data-dfn-type="grammar" data-export="" id="grammardef-number--all">&lt;number> | all<a class="self-link" href="#grammardef-number--all"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p>If a number is given, that number is a zero based index to a sub-path of the path. (See dcPath seg command).  The default value is <a class="property" data-link-type="propdesc" href="https://drafts.csswg.org/css-cascade-4/#propdef-all">all</a>.</p>
+     
+
+    <dt data-md="">
+     <p><dfn data-dfn-for="dcstop" data-dfn-type="element-attr" data-export="" id="element-attrdef-dcstop-segment">segment<a class="self-link" href="#element-attrdef-dcstop-segment"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p><dfn data-dfn-for="segment" data-dfn-type="grammar" data-export="" id="grammardef-number--all0">&lt;number> | all<a class="self-link" href="#grammardef-number--all0"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p>If a number is given, that number is a zero based index to a segment of the path. (See dcPath seg command).  The default value is <a class="property" data-link-type="propdesc" href="https://drafts.csswg.org/css-cascade-4/#propdef-all">all</a>.</p>
+     
+
+    <dt data-md="">
+     <p><dfn data-dfn-for="dcstop" data-dfn-type="element-attr" data-export="" id="element-attrdef-dcstop-colors">colors<a class="self-link" href="#element-attrdef-dcstop-colors"></a></dfn></p>
+     
+
+    <dd data-md="">
+     <p><dfn data-dfn-for="segment" data-dfn-type="grammar" data-export="" id="grammardef-dc-constraint-set">&lt;dc-constraint-set><a class="self-link" href="#grammardef-dc-constraint-set"></a></dfn></p>
+     
+</dl>
+
+   <p><dfn class="idl-code" data-dfn-for="dcstop" data-dfn-type="interface" data-export="" id="dcstopelement">dcStopElement<a class="self-link" href="#dcstopelement"></a></dfn> Interface.</p>
+
+
+   <p class="note" role="note">Note: Interface still to do.</p>
+
+
+   <h3 class="heading settled" data-level="2.4" id="rendering_dcpatches"><span class="secno">2.4. </span><span class="content">Rendering Diffusion Curve Patches</span><a class="self-link" href="#rendering_dcpatches"></a></h3>
+
+
+   <p class="note" role="note">Note: This section describes our method of rendering diffusion cuves.
+This method is one of the fastest of the published methods, and has no known
+artefacts.
+This section is included to give an idea on how diffusion curves might be 
+rendererd, though other methods could also be used depending on the 
+conformance requirements (e.g. calculate a minimal surface by solving a
+Laplacian partial differential equation per color channel).</p>
+
+
+   <div class="example" id="example-e45d3b8f"><a class="self-link" href="#example-e45d3b8f"></a>
+Pixel types for the Constraint Pixel Image:
+
+
+    <p><img src="examples/dc-render-grid.svg" width="400"></p>
+
+
+    <ul>
+     <li data-md="">
+      <p>Blue - Curve Constraint Pixels. Pixels that lie on the diffusion curve path.</p>
+      
+
+     <li data-md="">
+      <p>Cyan - Boundary Constraint Pixels. Pixels adjacent to at least one pixel
+on the diffusion curve path.</p>
+      
+
+     <li data-md="">
+      <p>Red - Unconstrained Pixels. Pixels away from the diffusion curve path. These
+pixels will be coloured by the diffusion process.</p>
+      
+</ul>
+</div>
+
+
+   <h4 class="heading settled" data-level="2.4.1" id="render_overview"><span class="secno">2.4.1. </span><span class="content">Overview of the rendering process </span><a class="self-link" href="#render_overview"></a></h4>
+<i>This section is not normative.</i>
+
+
+   <p>This diffusion curve rendering method, is based on the multi-grid method,
+with some improvements to avoid artefacts.</p>
+
+
+   <p>The initial pixel buffer is initialised by rendering Curve Constraint Pixels
+and Boundary Constraint Pixels from the diffusion curve data.
+Pixels not touched during this step are unconstrained pixels - they have
+no value yet, but will be filled during the diffusion process.</p>
+
+
+   <p>The diffusion process operates by downsampling to produce successively coarser versions
+of the initial pixel buffer, where the thickened constraints have expanded to
+fill the entire buffer. During this process, each down-sampled buffer is stored
+on the Processed Pixel Image Stack.</p>
+
+
+   <p>Then, stepping back through the pixel buffers on the stack, the unconstrained
+pixels are filled by sampling from the previous, smaller, buffer.
+The filled unconstrained pixels in the pixel buffer are then smoothed, and if
+there are more buffers on the stack, the process is repeated.
+Otherwise, the smoothed image is the final rendered result.</p>
+
+
+   <h4 class="heading settled" data-level="2.4.2" id="pixel_constraint_image"><span class="secno">2.4.2. </span><span class="content">Generate Constraint Pixel Image</span><a class="self-link" href="#pixel_constraint_image"></a></h4>
+
+   <ol>
+    <li data-md="">
+     <p>Initialise a bitmap buffer of the desired width and height.</p>
+     
+
+    <li data-md="">
+     <p>Vectorise diffusion curves into straight line segments
+to produce a data structure for each diffusion curve containing
+the start and end point of the path and a list containing the start
+point co-ordinate and left and right color specification for each 
+segment.</p>
+     
+
+    <li data-md="">
+     <p>For each diffusion curve:</p>
+     
+
+     <ol>
+      <li data-md="">
+       <p>For each vectorised diffusion curve segment:</p>
+       
+
+       <ol>
+        <li data-md="">
+         <p>Trace the segment and for each pixel crossed, determine and
+store the Crossing Data:</p>
+         
+
+         <ol>
+          <li data-md="">
+           <p>The discrete pixel grid co-ordinate.</p>
+           
+
+          <li data-md="">
+           <p>A fractional position indicating where the segment enters
+and exits the pixel at the sub-pixel level.</p>
+           
+
+          <li data-md="">
+           <p>The left and right colour value of the path segment at the
+center of the pixel.</p>
+           
+</ol>
+        <li data-md="">
+         <p>Add the Crossing Data to a list of all Crossing Data for that pixel</p>
+         
+</ol></ol></ol>
+
+   <h4 class="heading settled" data-level="2.4.3" id="curve_constraint_pixels"><span class="secno">2.4.3. </span><span class="content">Calculate pixel values for Curve Constraint Pixels</span><a class="self-link" href="#curve_constraint_pixels"></a></h4>
+
+   <ol>
+    <li data-md="">
+     <p>For each pixel that has at least one Crossing Data entry</p>
+     
+
+
+     <ol>
+      <li data-md="">
+       <p>For each Crossing Data entry associated with the pixel</p>
+       
+
+       <ol>
+        <li data-md="">
+         <p>Calculate area of influence as a percentage of pixel coverage
+for left and right hand sides</p>
+         
+</ol>
+      <li data-md="">
+       <p>Combine all colours based on area of influence</p>
+       
+
+      <li data-md="">
+       <p>Write pixel colour value to buffer</p>
+       
+</ol></ol>
+
+   <h4 class="heading settled" data-level="2.4.4" id="boundary_constraint_pixels"><span class="secno">2.4.4. </span><span class="content">Calculate pixel values for Boundary Constraint Pixels</span><a class="self-link" href="#boundary_constraint_pixels"></a></h4>
+
+   <ol>
+    <li data-md="">
+     <p>For each pixel that is not a Curve Constraint Pixel and is adjacent to
+at least one Curve Constraint Pixel</p>
+     
+
+     <ol>
+      <li data-md="">
+       <p>For each of the eight directions around the pixel, identify the
+closest Crossing Data entry in each adjacent pixel.</p>
+       
+
+      <li data-md="">
+       <p>Calculate a colour value that is the average, weighted by distance, of
+the colours of the identified Crossing Data entries.</p>
+       
+
+      <li data-md="">
+       <p>Assign that colour value to the current pixel.</p>
+       
+</ol></ol>
+
+   <h4 class="heading settled" data-level="2.4.5" id="downsample"><span class="secno">2.4.5. </span><span class="content">Downsample and thicken constraints</span><a class="self-link" href="#downsample"></a></h4>
+
+   <ol>
+    <li data-md="">
+     <p>Set the Constraint Pixel Image to be the Current Pixel Image.</p>
+     
+
+    <li data-md="">
+     <p>While there are unconstrained pixels in the Current Pixel Image</p>
+     
+
+     <ol>
+      <li data-md="">
+       <p>For each unconstrained pixel that has a constrained pixel
+in any of the cardinal directions:</p>
+       
+
+       <ol>
+        <li data-md="">
+         <p>Calculate the average colour of the neighbouring constrained pixels.</p>
+         
+
+        <li data-md="">
+         <p>Assign the calculated colour to the unconstrained pixel.</p>
+         
+
+        <li data-md="">
+         <p>Mark pixel as thickened.</p>
+         
+</ol>
+      <li data-md="">
+       <p>If there are remaining unconstrained pixels that have not been marked
+as thickened:</p>
+       
+
+       <ol>
+        <li data-md="">
+         <p>Create a bitmap buffer, named the coarse pixel image,at half the
+width and height of the Current Pixel Image.</p>
+         
+
+        <li data-md="">
+         <p>For each pixel in the coarse pixel image (the destination pixel):</p>
+         
+
+         <ol>
+          <li data-md="">
+           <p>Identify the source pixel set as the pixels located at
+(2x, 2y), (2x+1,2y), (2x, 2y+1), (2x+1,2y+1)
+in the Current Pixel Image.</p>
+           
+
+          <li data-md="">
+           <p>If the source pixel set includes at least one constrained or
+thickened pixel:</p>
+           
+
+           <ol>
+            <li data-md="">
+             <p>Initialise the destination pixel as the average of all
+constrained or thickened pixels in the source pixel set.</p>
+             
+
+            <li data-md="">
+             <p>Mark the destination pixel as constrained.</p>
+             
+</ol>
+          <li data-md="">
+           <p>Otherwise: Mark the destination pixel as unconstrained.</p>
+           
+</ol>
+        <li data-md="">
+         <p>Push Current Pixel Image onto the Processed Pixel Image Stack.</p>
+         
+
+        <li data-md="">
+         <p>Set the coarse pixel image as the Current Pixel Image.</p>
+         
+</ol></ol></ol>
+
+   <h4 class="heading settled" data-level="2.4.6" id="upsample"><span class="secno">2.4.6. </span><span class="content">Upsample with Laplacian smoothing for unconstrained pixels</span><a class="self-link" href="#upsample"></a></h4>
+
+   <ol>
+    <li data-md="">
+     <p>Begin loop:</p>
+     
+
+     <ol>
+      <li data-md="">
+       <p>Perform a multi-grid iteration method to smooth unconstrained and thickened
+pixels of the Current Pixel Image.</p>
+       
+
+
+      <li data-md="">
+       <p>If processed image stack is empty, exit loop.</p>
+       
+
+
+      <li data-md="">
+       <p>Set Current Pixel Image as coarse pixel image.</p>
+       
+
+
+      <li data-md="">
+       <p>Pop the top image off the processed image stack, set as current pixel
+image.</p>
+       
+
+
+      <li data-md="">
+       <p>For each unconstrained pixel in the Current Pixel Image:</p>
+       
+
+       <ol>
+        <li data-md="">
+         <p>Set source pixel as the pixel located at (floor(x/2),floor(y/2))
+in the coarse pixel image, where (x,y) is the location of the
+unconstrained pixel in the Current Pixel Image.</p>
+         
+
+        <li data-md="">
+         <p>Set the colour of the unconstrained pixel as the colour of the
+source pixel.</p>
+         
+</ol></ol>
+     
+
+    <li data-md="">
+     <p>Return Current Pixel Image as the final rendered result</p>
+     
+</ol>
+
+   <div class="example" id="example-510ea765"><a class="self-link" href="#example-510ea765"></a>
+Rendered Curve Constraint Pixels for the following diffusion curves.
+
+    <pre>&lt;dcpath d="M0,6.5 C5,6.5 5.5,0 5.5 0" color-profile=" L <span style="color: #57BEC7">#57BEC7</span>, R <span style="color: #F3C110">#F3C110</span>" />
+&lt;dcpath d="M 3.3,5.6 L 6.5,9" color-profile=" L <span style="color: #E24B75">#E24B75</span>, R <span style="color: #57BEC7">#57BEC7</span>" />
+</pre>
+
+    <p><img src="examples/dc-render-grid-3.svg#ccp_view" width="400"></p>
+</div>
+
+
+   <div class="example" id="example-eb722f3d"><a class="self-link" href="#example-eb722f3d"></a>
+
+
+    <p>Rendered Boundary Constraint Pixels for the diffusion curves of the previous
+example.</p>
+
+
+    <p><img src="examples/dc-render-grid-3.svg#bcp_view" width="400"></p>
+</div>
+
+
+   <div class="example" id="example-b9b906d1"><a class="self-link" href="#example-b9b906d1"></a>
+
+
+    <p>Final rendered result.</p>
+
+
+    <p><img src="examples/dc-render-grid-3.svg" width="400"></p>
+</div>
+
+
+   <div class="example" id="example-7840fa35"><a class="self-link" href="#example-7840fa35"></a>
+
+
+    <p>Snapshot images, taken during the rendering process.</p>
+
+
+    <p><img src="examples/render-steps.png"></p>
+
+
+    <p>Left to right:</p>
+
+    <ol>
+     <li data-md="">
+      <p>Constraint pixel image after Curve Constraint Pixels rendered</p>
+      
+
+     <li data-md="">
+      <p>Constraint pixel image after Boundary Constraint Pixels rendered</p>
+      
+
+     <li data-md="">
+      <p>Constraint pixel image set as Current Pixel Image and thickened.
+note: this image is then pushed on to Processed Pixel Image Stack</p>
+      
+
+     <li data-md="">
+      <p>Coarse pixel image at first downsampling step (4px x 4px)</p>
+      
+
+     <li data-md="">
+      <p>Coarse pixel image thickened</p>
+      
+
+     <li data-md="">
+      <p>Current pixel image smoothed</p>
+      
+
+     <li data-md="">
+      <p>Pixel image popped off Processed Pixel Image Stack and set as current
+pixel image, with unconstrained pixels coloured from course pixel image</p>
+      
+
+     <li data-md="">
+      <p>Current pixel image smoothed to give final rendered result</p>
+      
+</ol>
+</div>
+
+
+
+
+</main>
+
+
+
+
+  <h2 class="no-num heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="no-num heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <ul class="indexlist">
+   <li><a href="#element-attrdef-dcpatch-boundary">boundary</a><span>, in §2.3.2</span>
+   <li><a href="#element-attrdef-dcpatch-boundary-colors">boundary-colors</a><span>, in §2.3.2</span>
+   <li><a href="#typedef-color-profile">&lt;color-profile></a><span>, in §2.3.2</span>
+   <li>color-profile
+    <ul>
+     <li><a href="#color_profile">definition of</a><span>, in §2.3.1</span>
+     <li><a href="#element-attrdef-dcpath-color-profile">element-attr for dcpath</a><span>, in §2.3.3</span>
+    </ul>
+   <li><a href="#element-attrdef-dcstop-colors">colors</a><span>, in §2.3.4</span>
+   <li><a href="#element-attrdef-dcpath-d">d</a><span>, in §2.3.3</span>
+   <li><a href="#dc_constraint_set">dc-constraint-set</a><span>, in §2.3.1</span>
+   <li><a href="#grammardef-dc-constraint-set">&lt;dc-constraint-set></a><span>, in §2.3.4</span>
+   <li><a href="#elementdef-dcpatch">dcpatch</a><span>, in §2.3.2</span>
+   <li><a href="#dcpatchelement">dcPatchElement</a><span>, in §2.3.2</span>
+   <li><a href="#elementdef-dcpath">dcpath</a><span>, in §2.3.3</span>
+   <li><a href="#elementdef-dcstop">dcstop</a><span>, in §2.3.4</span>
+   <li><a href="#dcstopelement">dcStopElement</a><span>, in §2.3.4</span>
+   <li>id
+    <ul>
+     <li><a href="#element-attrdef-dcpatch-id">element-attr for dcpatch</a><span>, in §2.3.2</span>
+     <li><a href="#element-attrdef-dcpath-id">element-attr for dcpath</a><span>, in §2.3.3</span>
+     <li><a href="#element-attrdef-dcstop-id">element-attr for dcstop</a><span>, in §2.3.4</span>
+    </ul>
+   <li><a href="#inherit">inherit</a><span>, in §2.3.2</span>
+   <li><a href="#grammardef-l-color-color--r-color-color--lr-color-color">[[L &lt;color> &lt;color>?] || [R &lt;color> &lt;color>?]] | [LR? &lt;color> &lt;color>?]</a><span>, in §2.3.1</span>
+   <li>&lt;number> | all
+    <ul>
+     <li><a href="#grammardef-number--all">grammar for subpath</a><span>, in §2.3.4</span>
+     <li><a href="#grammardef-number--all0">grammar for segment</a><span>, in §2.3.4</span>
+    </ul>
+   <li><a href="#grammardef-number--percentage">&lt;number> | &lt;percentage></a><span>, in §2.3.1</span>
+   <li><a href="#objectboundingbox">objectBoundingBox</a><span>, in §2.3.2</span>
+   <li>offset
+    <ul>
+     <li><a href="#offset">definition of</a><span>, in §2.3.1</span>
+     <li><a href="#element-attrdef-dcstop-offset">element-attr for dcstop</a><span>, in §2.3.4</span>
+    </ul>
+   <li><a href="#element-attrdef-dcpatch-patchtransform">patchTransform</a><span>, in §2.3.2</span>
+   <li><a href="#element-attrdef-dcpatch-patchunits">patchUnits</a><span>, in §2.3.2</span>
+   <li><a href="#path_pos">path-pos</a><span>, in §2.3.1</span>
+   <li><a href="#grammardef-path-pos-dc-constraint-set">[&lt;path-pos>? &lt;dc-constraint-set>]#</a><span>, in §2.3.1</span>
+   <li><a href="#typedef-rect">&lt;rect></a><span>, in §2.3.2</span>
+   <li><a href="#grammardef-rect--inherit">&lt;rect> | inherit</a><span>, in §2.3.2</span>
+   <li><a href="#element-attrdef-dcstop-segment">segment</a><span>, in §2.3.4</span>
+   <li><a href="#grammardef-sub-number-seg-number-offset">[sub &lt;number>]? [seg &lt;number>]? &lt;offset>?</a><span>, in §2.3.1</span>
+   <li><a href="#element-attrdef-dcstop-subpath">subpath</a><span>, in §2.3.4</span>
+   <li><a href="#grammardef-svg-path">svg-path</a><span>, in §2.3.3</span>
+   <li><a href="#typedef-transform-list">&lt;transform-list></a><span>, in §2.3.2</span>
+   <li><a href="#userspaceonuse">userSpaceOnUse</a><span>, in §2.3.2</span>
+   <li><a href="#grammardef-userspaceonuse--objectboundingbox">userSpaceOnUse | objectBoundingBox</a><span>, in §2.3.2</span></ul>
+  <h3 class="no-num heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <ul class="indexlist">
+   <li><a data-link-type="biblio" href="#biblio-css-cascade-4">[css-cascade-4]</a> defines the following terms:
+    <ul>
+     <li><a href="https://drafts.csswg.org/css-cascade-4/#propdef-all">all</a>
+    </ul>
+   <li><a data-link-type="biblio" href="#biblio-svg2">[SVG2]</a> defines the following terms:
+    <ul>
+     <li><a href="https://svgwg.org/svg2-draft/painting.html#TermPaintServerElement">paint server element</a>
+    </ul></ul>
+  <h2 class="no-num heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+  <h3 class="no-num heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
+  <dl>
+   <dt id="biblio-svg2"><a class="self-link" href="#biblio-svg2"></a>[SVG2]
+   <dd>Nikos Andronikos; et al. <a href="http://www.w3.org/TR/SVG2/">Scalable Vector Graphics (SVG) 2</a>. 9 July 2015. WD. URL: <a href="http://www.w3.org/TR/SVG2/">http://www.w3.org/TR/SVG2/</a>
+   <dt id="biblio-css-cascade-4"><a class="self-link" href="#biblio-css-cascade-4"></a>[CSS-CASCADE-4]
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="http://www.w3.org/TR/css-cascade-4/">CSS Cascading and Inheritance Level 4</a>. 21 April 2015. WD. URL: <a href="http://www.w3.org/TR/css-cascade-4/">http://www.w3.org/TR/css-cascade-4/</a></dl>
+  <h2 class="no-num heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
+  <div style="counter-reset:issue">
+   <div class="issue"> Category should include Gradient elements - bikeshed looks to be missing this defn<a href="#issue-c3cc9297"> ↵ </a></div></div></body>
+</html>

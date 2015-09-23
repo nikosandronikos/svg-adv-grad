@@ -1,0 +1,23 @@
+<?xml version="1.0" standalone="no"?>
+<svg viewBox="0 0 140 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <path d="M -3,-3 L 3,3 M3,-3 L-3,3" id="cross" stroke-linecap="round"/>
+        <marker id="r" viewbox="-5 -5 5 5" style="overflow:visible">
+            <use xlink:href="#cross" stroke="red"/>
+        </marker>
+        <marker id="g" viewbox="-5 -5 5 5" style="overflow:visible">
+            <use xlink:href="#cross" stroke="green"/>
+        </marker>
+        <marker id="b" viewbox="-5 -5 5 5" style="overflow:visible">
+            <use xlink:href="#cross" stroke="blue"/>
+        </marker>
+        <marker id="p" viewbox="-5 -5 5 5" style="overflow:visible">
+            <use xlink:href="#cross" stroke="purple"/>
+        </marker>
+        <marker id="c" viewbox="-5 -5 5 5" style="overflow:visible">
+            <use xlink:href="#cross" stroke="cyan"/>
+        </marker>
+    </defs>
+    <path d="M20,10 H120" marker-start="url(#g)" marker-end="url(#b)" stroke="black" />
+    <path d="M60,10 H 66.6 73.2 80" marker-mid="url(#r)" marker-start="url(#p)" marker-end="url(#c)" stroke="black" />
+</svg>

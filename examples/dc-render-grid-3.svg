@@ -1,0 +1,136 @@
+<?xml version="1.0" standalone="no"?>
+<svg viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <style>
+        /* Curve Constraint Pixels */
+        /* .c {fill: black;} */
+        /* Boundary Constraint Pixels */
+        /* .b {fill: black;} */
+        /* Unconstrained Pixels */
+        /* .u {fill: black;} */
+        svg {background: black;}
+    </style>
+    <defs>
+        <rect id="pxl" width="1" height="1" stroke="black" stroke-width="0.02"/>
+        <!-- Thanks to Chrome and Safari not supporting styling inside use,
+             I have to do this the sucky way -->
+        <g id="curve_constraint_pixels">
+            <use xlink:href="#pxl" x="5" y="0" class="c" fill="#bac053"/>
+            
+            <use xlink:href="#pxl" x="5" y="1" class="c" fill="#e2c124"/>
+            
+            <use xlink:href="#pxl" x="4" y="2" class="c" fill="#72bfa7"/>
+            <use xlink:href="#pxl" x="5" y="2" class="c" fill="#f3c110"/>
+
+            <use xlink:href="#pxl" x="4" y="3" class="c" fill="#b8c056"/>
+
+            <use xlink:href="#pxl" x="3" y="4" class="c" fill="#8abf8b"/>
+            <use xlink:href="#pxl" x="4" y="4" class="c" fill="#d6c032"/>
+
+            <use xlink:href="#pxl" x="2" y="5" class="c" fill="#82bf94"/>
+            <use xlink:href="#pxl" x="3" y="5" class="c" fill="#ceb345"/>
+
+            <use xlink:href="#pxl" x="0" y="6" class="c" fill="#b2c05c"/>
+            <use xlink:href="#pxl" x="1" y="6" class="c" fill="#d6c032"/>
+            <use xlink:href="#pxl" x="2" y="6" class="c" fill="#d8c12f"/>
+            <use xlink:href="#pxl" x="3" y="6" class="c" fill="#5bbbc5"/>
+            <use xlink:href="#pxl" x="4" y="6" class="c" fill="#c06789"/>
+
+            <use xlink:href="#pxl" x="4" y="7" class="c" fill="#61b6c1"/>
+            <use xlink:href="#pxl" x="5" y="7" class="c" fill="#c66285"/>
+        </g>
+        <g id="boundary_constraint_pixels">
+            <use xlink:href="#pxl" x="4" y="0" class="b" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="6" y="0" class="b" fill="#f3c110"/>    
+            
+            <use xlink:href="#pxl" x="3" y="1" class="b" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="4" y="1" class="b" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="6" y="1" class="b" fill="#f3c110"/>    
+
+            <use xlink:href="#pxl" x="3" y="2" class="b" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="6" y="2" class="b" fill="#f3c110"/>    
+
+            <use xlink:href="#pxl" x="2" y="3" class="b" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="3" y="3" class="b" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="5" y="3" class="b" fill="#f3c110"/>
+            <use xlink:href="#pxl" x="6" y="3" class="b" fill="#f1b01f"/>    
+
+            <use xlink:href="#pxl" x="1" y="4" class="b" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="2" y="4" class="b" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="5" y="4" class="b" fill="#f3c110"/>
+
+            <use xlink:href="#pxl" x="0" y="5" class="b" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="1" y="5" class="b" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="4" y="5" class="b" fill="#e87353"/>
+            <use xlink:href="#pxl" x="5" y="5" class="b" fill="#ea7f48"/>
+
+            <use xlink:href="#pxl" x="5" y="6" class="b" fill="#e24b75"/>
+            <use xlink:href="#pxl" x="6" y="6" class="b" fill="#e24b75"/>    
+
+            <use xlink:href="#pxl" x="0" y="7" class="b" fill="#f3c110"/>
+            <use xlink:href="#pxl" x="1" y="7" class="b" fill="#f3c110"/>
+            <use xlink:href="#pxl" x="2" y="7" class="b" fill="#c4c047"/>
+            <use xlink:href="#pxl" x="3" y="7" class="b" fill="#72bfa7"/>
+            <use xlink:href="#pxl" x="6" y="7" class="b" fill="#e24b75"/>    
+        </g>
+        <g id="unconstrained_pixels">
+            <use xlink:href="#pxl" x="0" y="0" class="u" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="1" y="0" class="u" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="2" y="0" class="u" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="3" y="0" class="u" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="7" y="0" class="u" fill="#f2b917"/>        
+            
+            <use xlink:href="#pxl" x="0" y="1" class="u" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="1" y="1" class="u" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="2" y="1" class="u" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="7" y="1" class="u" fill="#f1b61a"/>
+
+            <use xlink:href="#pxl" x="0" y="2" class="u" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="1" y="2" class="u" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="2" y="2" class="u" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="7" y="2" class="u" fill="#f0af20"/>
+
+            <use xlink:href="#pxl" x="0" y="3" class="u" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="1" y="3" class="u" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="7" y="3" class="u" fill="#eea22a"/>
+
+            <use xlink:href="#pxl" x="0" y="4" class="u" fill="#57bec7"/>
+            <use xlink:href="#pxl" x="6" y="4" class="u" fill="#ed9b31"/>    
+            <use xlink:href="#pxl" x="7" y="4" class="u" fill="#ec903a"/>
+
+            <use xlink:href="#pxl" x="6" y="5" class="u" fill="#e97b4c"/>    
+            <use xlink:href="#pxl" x="7" y="5" class="u" fill="#e8784f"/>
+
+            <use xlink:href="#pxl" x="7" y="6" class="u" fill="#e56261"/>
+
+            <use xlink:href="#pxl" x="7" y="7" class="u" fill="#e24b75"/>
+        </g>
+        <path id="dcpath" d="M0,6.5 C5,6.5 5.5,0 5.5 0 M 3.3,5.6 L 6.5,9" stroke="white" fill="none" stroke-width="0.1"/>
+    </defs>
+    <use xlink:href="#boundary_constraint_pixels" x="0" y="0"/>
+    <use xlink:href="#curve_constraint_pixels" x="0" y="0"/>
+    <use xlink:href="#unconstrained_pixels" x="0" y="0"/>
+    <use xlink:href="#dcpath" x="0" y="0"/>
+    
+    <view id="ucp_view" viewBox="8 0 8 8" />
+    <use xlink:href="#unconstrained_pixels" x="8" y="0"/>
+    <use xlink:href="#dcpath" x="8" y="0"/>
+    
+    <view id="bcp_view" viewBox="16 0 8 8" />
+    <use xlink:href="#boundary_constraint_pixels" x="16" y="0"/>
+    <use xlink:href="#dcpath" x="16" y="0"/>
+    
+    <view id="ccp_view" viewBox="24 0 8 8" />
+    <use xlink:href="#curve_constraint_pixels" x="24" y="0"/>
+    <use xlink:href="#dcpath" x="24" y="0"/>
+
+    <view id="desktop_view" viewBox="33 0 14 8" />
+    <use xlink:href="#boundary_constraint_pixels" x="32" y="0"/>
+    <use xlink:href="#curve_constraint_pixels" x="32" y="0"/>
+    <use xlink:href="#unconstrained_pixels" x="32" y="0"/>
+    <use xlink:href="#boundary_constraint_pixels" x="40" y="0"/>
+    <use xlink:href="#curve_constraint_pixels" x="40" y="0"/>
+    <use xlink:href="#unconstrained_pixels" x="40" y="0"/>
+    <use xlink:href="#curve_constraint_pixels" x="38" y="-4"/>
+    <use xlink:href="#boundary_constraint_pixels" x="36" y="6"/>
+ </svg>
+

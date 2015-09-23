@@ -1,0 +1,80 @@
+<?xml version="1.0" standalone="no"?>
+<svg viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <rect id="pxl" width="1" height="1" stroke="black" stroke-width="0.02"/>
+    </defs>
+    <use xlink:href="#pxl" x="0" y="0" fill="red"/>
+    <use xlink:href="#pxl" x="1" y="0" fill="red"/>
+    <use xlink:href="#pxl" x="2" y="0" fill="red"/>
+    <use xlink:href="#pxl" x="3" y="0" fill="red"/>
+    <use xlink:href="#pxl" x="4" y="0" fill="cyan"/>
+    <use xlink:href="#pxl" x="5" y="0" fill="blue"/>
+    <use xlink:href="#pxl" x="6" y="0" fill="cyan"/>    
+    <use xlink:href="#pxl" x="7" y="0" fill="red"/>        
+    
+    <use xlink:href="#pxl" x="0" y="1" fill="red"/>
+    <use xlink:href="#pxl" x="1" y="1" fill="red"/>
+    <use xlink:href="#pxl" x="2" y="1" fill="red"/>
+    <use xlink:href="#pxl" x="3" y="1" fill="cyan"/>
+    <use xlink:href="#pxl" x="4" y="1" fill="cyan"/>
+    <use xlink:href="#pxl" x="5" y="1" fill="blue"/>
+    <use xlink:href="#pxl" x="6" y="1" fill="cyan"/>    
+    <use xlink:href="#pxl" x="7" y="1" fill="red"/>
+
+    <use xlink:href="#pxl" x="0" y="2" fill="red"/>
+    <use xlink:href="#pxl" x="1" y="2" fill="red"/>
+    <use xlink:href="#pxl" x="2" y="2" fill="red"/>
+    <use xlink:href="#pxl" x="3" y="2" fill="cyan"/>
+    <use xlink:href="#pxl" x="4" y="2" fill="blue"/>
+    <use xlink:href="#pxl" x="5" y="2" fill="blue"/>
+    <use xlink:href="#pxl" x="6" y="2" fill="cyan"/>    
+    <use xlink:href="#pxl" x="7" y="2" fill="red"/>
+
+    <use xlink:href="#pxl" x="0" y="3" fill="red"/>
+    <use xlink:href="#pxl" x="1" y="3" fill="red"/>
+    <use xlink:href="#pxl" x="2" y="3" fill="cyan"/>
+    <use xlink:href="#pxl" x="3" y="3" fill="cyan"/>
+    <use xlink:href="#pxl" x="4" y="3" fill="blue"/>
+    <use xlink:href="#pxl" x="5" y="3" fill="cyan"/>
+    <use xlink:href="#pxl" x="6" y="3" fill="cyan"/>    
+    <use xlink:href="#pxl" x="7" y="3" fill="red"/>
+
+    <use xlink:href="#pxl" x="0" y="4" fill="red"/>
+    <use xlink:href="#pxl" x="1" y="4" fill="cyan"/>
+    <use xlink:href="#pxl" x="2" y="4" fill="cyan"/>
+    <use xlink:href="#pxl" x="3" y="4" fill="blue"/>
+    <use xlink:href="#pxl" x="4" y="4" fill="blue"/>
+    <use xlink:href="#pxl" x="5" y="4" fill="cyan"/>
+    <use xlink:href="#pxl" x="6" y="4" fill="red"/>    
+    <use xlink:href="#pxl" x="7" y="4" fill="red"/>
+
+    <use xlink:href="#pxl" x="0" y="5" fill="cyan"/>
+    <use xlink:href="#pxl" x="1" y="5" fill="cyan"/>
+    <use xlink:href="#pxl" x="2" y="5" fill="blue"/>
+    <use xlink:href="#pxl" x="3" y="5" fill="blue"/>
+    <use xlink:href="#pxl" x="4" y="5" fill="cyan"/>
+    <use xlink:href="#pxl" x="5" y="5" fill="cyan"/>
+    <use xlink:href="#pxl" x="6" y="5" fill="red"/>    
+    <use xlink:href="#pxl" x="7" y="5" fill="red"/>
+
+    <use xlink:href="#pxl" x="0" y="6" fill="blue"/>
+    <use xlink:href="#pxl" x="1" y="6" fill="blue"/>
+    <use xlink:href="#pxl" x="2" y="6" fill="blue"/>
+    <use xlink:href="#pxl" x="3" y="6" fill="blue"/>
+    <use xlink:href="#pxl" x="4" y="6" fill="blue"/>
+    <use xlink:href="#pxl" x="5" y="6" fill="cyan"/>
+    <use xlink:href="#pxl" x="6" y="6" fill="cyan"/>    
+    <use xlink:href="#pxl" x="7" y="6" fill="red"/>
+
+    <use xlink:href="#pxl" x="0" y="7" fill="cyan"/>
+    <use xlink:href="#pxl" x="1" y="7" fill="cyan"/>
+    <use xlink:href="#pxl" x="2" y="7" fill="cyan"/>
+    <use xlink:href="#pxl" x="3" y="7" fill="cyan"/>
+    <use xlink:href="#pxl" x="4" y="7" fill="blue"/>
+    <use xlink:href="#pxl" x="5" y="7" fill="blue"/>
+    <use xlink:href="#pxl" x="6" y="7" fill="cyan"/>    
+    <use xlink:href="#pxl" x="7" y="7" fill="red"/>
+
+    <path d="M0,6.5 C5,6.5 5.5,0 5.5 0 M 3.3,5.6 L 6.5,9" stroke="white" fill="none" stroke-width="0.1"/>
+
+</svg>

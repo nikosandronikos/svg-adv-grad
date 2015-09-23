@@ -1,0 +1,555 @@
+<style>
+/* Bikeshed doesn't seem to have any nice styling for personal specs */
+.definition-table {
+    background: hsl(243, 80%, 92%);
+    width: 100%;
+    border-left: .5rem solid hsl(243, 80%, 72%);
+}
+
+.definition-table th {
+    text-align: right;
+    padding-right: 1em;
+}
+
+.definition-table td {
+    width: 80%;
+    text-align: left;
+}
+
+.issue, .note, .example, .why, .advisement, blockquote {
+    padding: .5em;
+    border: .5em;
+    border-left-style: solid;
+    page-break-inside: avoid;
+    margin-bottom: 1em;
+}
+
+.example:not(.no-marker)::before {
+    content: "EXAMPLE";
+    content: "EXAMPLE " counter(exampleno);
+}
+.example::before, .example > .marker {
+    color: #827017;
+    font-family: sans-serif;
+    min-width: 7.5em;
+    display: block;
+}
+
+.example {
+    border-color: #E0CB52;
+    background: #FCFAEE;
+    counter-increment: exampleno;
+    overflow: auto;
+    clear: both;
+}
+.issue:not(.no-marker)::before {
+    content: "ISSUE " counter(issue);
+    padding-right: 1em;
+}
+.issue::before, .issue > .marker {
+    color: #AE1E1E;
+}
+
+.issue {
+    border-color: #E05252;
+    background: #FBE9E9;
+    counter-increment: issue;
+    overflow: auto;
+}
+
+.note, .why {
+    border-color: #52E052;
+    background: #E9FBE9;
+    overflow: auto;
+}
+</style>
+
+<pre class='metadata'>
+Title: SVG Advanced Gradients
+Status: UD
+ED: 
+Shortname: svg-gradients
+Level: 1
+Editor: Nikos Andronikos, Canon Inc/CiSRA, nikos.andronikos@cisra.canon.com.au
+Abstract: This proposed module for SVG, defines diffusion curves, a primitive for creating advanced gradient fills.
+Group: personal
+</pre>
+
+<h2 id='introduction'>Introduction</h2>
+Advanced gradients are two dimensional images comprised of smooth transitions
+and sharp discontinuities. 
+There are a number of methods for defining advanced gradients, such as:
+* Mesh based gradients
+* Diffusion curves
+
+Each method has its own advantages. Mesh based gradients are typically very 
+fast to render, but the markup to describe them is verbose and makes animation
+difficult.
+Diffusion curves on the other hand are a compact representation based on the 
+traditional artist's workflow of sketching outlines and filling with colour.
+
+<div class="example">
+<pre>
+A diffusion curve image of a star (right), and the curves required to create
+it (left).
+</pre>
+<img src="examples/star.png"/>
+</div>
+
+<h2 id='diffusioncurves'>Diffusion Curves</h2>
+Diffusion curves are a compact representation for specifying advanced gradient
+fills.
+A diffusion curve is a continuous series of colour constraints, where the colour
+constraint sets a colour that is to be diffused outwards from either the left,
+the right, or both sides of the curve. The colours diffusing outwards from a
+curve mix with other colours diffusing outwards from other diffusion curves,
+to create a gradient image. In this way, many diffusion curves may work
+together to create a complex image.
+
+<h3 id='usecases'>Use Cases</h3>
+Where would diffusion curves provide benefits to the web platform?
+
+* Icons - a particularly good use case given the small size and requirements
+    for scalability.
+* Complex shading - as found in comics and cartoons (e.g. Marvel comics)
+* Photograph vectorisation - scalable representation of natural images
+* Conical gradients and other gradient primitives not natively supported
+* Animated advanced gradients - with a compact representation, diffusion
+    curves are easily animated compared to meshes
+* A higher level representation for Mesh Based Gradients benefits authors
+
+<h3 id='dcpatches'>Diffusion Curve Patches</h3>
+
+Diffusion curve patches are a paint server. Their use is similar to other
+SVG gradients (linear and radial).
+
+A patch is rectangular and may include one or more diffusion curves paths.
+Each diffusion curve path is described using standard SVG path syntax and may 
+have one or more stops that specify
+color constraints at positions along the path. Colour constraints may apply
+to either side of the path (left or right) or both sides.
+
+The rendered contents of the patch comprise smooth transitions of colour between 
+the diffusion curve paths. 
+
+<h3 id='specify_dcpatches'>Specifying Diffusion Curve Patches</h3>
+<h4 id='dcpatch_values'>Values</h4>
+<dl>
+<!-- color-profile syntax -->
+<dt><dfn value-for="color-profile">color-profile</dfn></dt>
+<dd>
+    <dfn dfn-type="grammar" dfn-for="color-profile">[&lt;path-pos>? &lt;dc-constraint-set>]#</dfn><br />
+    The color-profile attribute utilises a command syntax for specifying colour 
+    constraints at positions along the path.<br />
+    In the grammar for color-profile, path-pos is optional.
+    It may be omitted for some entries or for all entries.
+
+    Any set of color-profile entries without a path-pos are placed equidistant
+    along a sub-section of the path.
+    
+    That sub-section is defined as the section of path from the previous
+    color-profile entry with a path-pos, or the start of the path if none
+    present, to the next color-profile entry with a path-pos, or the end of the
+    path if none present.
+
+    The color-profile entries are placed such that there will be one
+    color-profile entry at the start of the sub-path and one color-profile 
+    entry at the end of the sub-path, with all other color-profile entries
+    placed evenly between.
+    
+    <div class="example">
+        <pre>
+            color-profile="LR green, LR red, LR red, LR blue"
+        </pre>
+        <img src="examples/path-pos-example-1.svg"/>
+        No color-profile entries have a path-pos. The sub-path is equivalent
+        to the full path. The color-profile entries are placed equidistant
+        along the path, with the first and last falling on the first and 
+        last points of the path respectively.
+    </div>
+
+    <div class="example">
+        <pre>
+            color-profile="LR green, 40% LR purple, LR red, LR red, 60% LR cyan, LR blue"
+        </pre>
+        <img src="examples/path-pos-example-2.svg"/>
+        With two color-profile entries that have a path-pos, this path is
+        sub-divided into three sub-paths.
+
+        The first sub-path extends from the start point of the path to the
+        first color-profile entry with a path-pos (purple).
+        The first color-profile entry (green) is placed on the start point
+        of the sub-path as this results in the entries being placed equidistant
+        and maintains the rule that a color-profile entry must be placed at the
+        start and end points of the sub-path.
+        
+        Likewise for the third sub-path - from the fifth color-profile entry
+        (cyan) to the end point of the path.
+        
+        The middle sub-path extends from the purple to the cyan color-profile
+        entries. The purple and cyan entries occupy the start and end points
+        of the sub-path, so the red entries are placed between them at positions
+        that result in the four color-profile entries being equidistant. 
+    </div>
+</dd>
+<!-- dc-constraint-set syntax -->
+<dt><dfn value-for="dc-constraint-set">dc-constraint-set</dfn></dt>
+<dd>
+    <dfn dfn-type="grammar" dfn-for="dc-constraint-set">
+        [[L &lt;color> &lt;color>?] || [R &lt;color> &lt;color>?]] | [LR? &lt;color> &lt;color>?]
+    </dfn>
+
+    Specifies a set of color constraints that fall upon a position of the path.
+
+    Color constraints may be specified independently on the left and right hand
+    sides of the path, or the color constraint may be specified to affect both
+    sides of the path.
+
+    Normally, colors transition smoothly along the path from one color
+    constraint to the next.
+    If multiple colors are specified at one position, an immediate transition
+    from the first to the second color occurs.
+</dd>
+<!-- path-pos syntax -->
+<dt><dfn value-for="color-profile">path-pos</dfn></dt>
+<dd>
+<dfn dfn-type="grammar" dfn-for="path-pos">[sub &lt;number>]? [seg &lt;number>]? &lt;offset>?</dfn>
+
+The sub and seg commands define a sub-section of the path that offset is
+relative to.  The default values for sub and seg are none. The default 
+value for offset is 0 (zero). Valid values for offset are between 0 and 1 
+inclusive or between 0% and 100% inclusive.
+<dl>
+    <dt>sub=none, seg=none</dt>
+    <dd>offset is an offset within the entire computed length of the path.</dd>
+    <dt>sub=&lt;number></dt>
+    <dd>offset is an offset within the sub-path referenced
+        by the zero based index immediately following the command.
+    </dd>
+    <dt>seg=&lt;number></dt>
+    <dd>offset is an offset within the segment referenced by the zero based 
+        index immediately following the command.
+    </dd>
+    <dt>sub=&lt;number>, seg=&lt;number></dt>
+    <dd>offset is an offset within the segment referenced by the zero based 
+        index immediately following the sub command. The zero segment is the first 
+        segment of the sub-path referenced by the zero based index immediately 
+        following the sub command.
+    </dd>
+</dl>
+</dd>
+<!-- offset syntax -->
+<dt><dfn value-for="offset">offset</dfn></dt>
+<dd><dfn dfn-type="grammar" dfn-for="offset">&lt;number> | &lt;percentage></dfn></dd>
+</dl>
+
+<h4 id='dcpatch_element'>dcpatch element</h4>
+<pre class='elementdef'>
+Name: dcpatch
+Categories: Paint server elements
+Contexts: defs element
+Content model: dcPath, dcStop
+Attributes: id, patchUnits, boundary-colors, boundary, patchTransform
+Dom interfaces: dcPatchElement
+</pre>
+
+Issue: Category should include Gradient elements - bikeshed looks to be missing this defn
+
+: <dfn dfn-type="element-attr" dfn-for="dcpatch">id</dfn>
+:: Identifier for referencing the patch
+: <dfn dfn-type="element-attr" dfn-for="dcpatch">patchUnits</dfn>
+:: <dfn dfn-type="grammar" dfn-for="patchUnits">userSpaceOnUse | objectBoundingBox</dfn>
+:: Defines the co-ordinate system within the patch.
+    : <dfn value-for="patchUnits">userSpaceOnUse</dfn>
+    :: userSpaceOnUse indicates that the user co-ordinate system in place at
+         the time the fill is used.
+    : <dfn value-for="patchUnits">objectBoundingBox</dfn>
+    :: objectBoundingBox essentially makes the co-ordinate system (0,0)-(1,1).  
+        This could further be transformed with gradientTransform.
+: <dfn dfn-type="element-attr" dfn-for="dcpatch">boundary</dfn>
+:: <dfn dfn-type="grammar" dfn-for="boundary">&lt;rect> | inherit</dfn>
+:: This rectangle defines the extent of the diffusion curve patch within the
+    co-ordinate space defined by patchUnits.
+    This rectangle functions as a clip on the diffusion curve geometry.
+    There are no pixels rendered outside this rectangle.
+    The default value depends on the value of patchUnits. If
+    patchUnits=userspaceonuse, the default value is the tight bounding box
+    of the shape being filled. If patchUnits=objectboundingbox, the default
+    value is a rectangle positioned at 0,0, with a width and height of one.
+    : <dfn value-for="boundary">&lt;rect></dfn>
+    :: The boundary is a rectangle in the co-ordinate space defined by patchUnits
+    : <dfn value-for="boundary">inherit</dfn>
+    :: The boundary curve is the shape being filled. The colour constraints are 
+        mapped onto this shape. If patchUnits=objectboundingbox, the shape is
+        transformed to fit within the co-ordinate space of the patch.
+: <dfn dfn-type="element-attr" dfn-for="dcpatch">boundary-colors</dfn>
+:: <dfn value-for="boundary-colors">&ltcolor-profile>
+:: Specifies the colour constraints along the boundary shape.
+    The outside of the colour profile is ignored - the colour on the outside of
+    the boundary is always rgba(0,0,0,0).
+    If the dcPatch element has child dcStop elements then these set colour
+    constraints on the boundary in addition to any set in the color-profile.
+: <dfn dfn-type="element-attr" dfn-for="dcpatch">patchTransform</dfn>
+:: <dfn value-for="patchTransform">&lt;transform-list>
+:: Contains the definition of an optional additional transformation from the
+    gradient co-ordinate system onto the target co-ordinate system 
+    (i.e., userspaceonuse or objectboundingbox). This additional
+    transformation matrix is post-multiplied to (i.e., inserted to the right of)
+    any previously defined transformations, including the implicit
+    transformation necessary to convert from object bounding box units to local
+    co-ordinate system. 
+
+<dfn dfn-type="interface" dfn-for="dcpatch">dcPatchElement</dfn> Interface
+Note: todo interface.
+
+<div class="example">
+This example shows the mapping of the dcpatch co-ordinate space when
+patchUnits=objectBoundingBox.
+<pre>
+&lt;svg viewBox="0 0 100 100">
+  &lt;defs>
+    &lt;dcpatch id="dc1" boundary="inherit" patchUnits="objectBoundingBox">
+        * various dcPath elements that define the internal shading for
+        * the star are defined here
+    &lt;dcpatch/>
+  &lt;/defs>
+  &lt;!-- filled star -->
+  &lt;polygon points="..." fill="url(#dc1)" />
+&lt;/svg>
+</pre>
+The dashed rectangle represents the bounds of the dcpatch, the black marked 
+points are co-ordinates within the dcpatch.
+The blue rectangle and marked points represent the svg viewbox and points within
+the svg user space.
+<img src="examples/object-bounds.svg" />
+</div>
+
+<h4 id='dcpath_element'>dcpath element</h4>
+<pre class='elementdef'>
+Name: dcpath
+Categories: Paint Server elements
+Contexts: dcpatch element, defs element
+Content model: dcstop element
+Attributes: id, d, color-profile
+Dom interfaces: dcStopElement
+</pre>
+Note: dcpath is added to the content model of the defs element.
+
+The colour constraints along each side of the dcPath must be smoothly 
+interpolated.
+Each dc-constraint-set allows for specification of the colour stop on the left 
+and right side of the path. The left and right are designated either using the 
+slash syntax or the LR syntax.
+If the optional second colour of a side is given, the two colour constraints
+occur at the same position, marking a sharp transition from the 1st to the 2nd
+colour at that point along the path.
+
+: <dfn dfn-type="element-attr" dfn-for="dcpath">id</dfn>
+:: Identifier for referencing the path
+: <dfn dfn-type="element-attr" dfn-for="dcpath">d</dfn>
+:: <dfn dfn-type="grammar" dfn-for="d">svg-path</dfn>
+:: lacuna value:  (none)<br /> Defines a diffusion curve. See path data.<br /> A value of (none) means that this path is ignored.
+: <dfn dfn-type="element-attr" dfn-for="dcpath">color-profile</dfn>
+:: The color-profile attribute utilises a command syntax for specifying colour constraints along the path.
+
+<h4 id='dcstop_element'>dcstop element</h4>
+<pre class='elementdef' style="background: red;">
+Name: dcstop 
+Categories: Paint Server elements
+Contexts: dcpath element
+Content model: empty
+Attributes: id, offset, subpath, segment, colors
+Dom interfaces: dcStopElement
+</pre>
+
+: <dfn dfn-type="element-attr" dfn-for="dcstop">id</dfn>
+:: Identifier for referencing the stop
+: <dfn dfn-type="element-attr" dfn-for="dcstop">offset</dfn>
+:: Offset along the path that the stop is placed at.  If two stops have the same offset, the second stop over-rides the first.  If a sharp transition along the path is desired, then two colour values should be given for the stop.
+: <dfn dfn-type="element-attr" dfn-for="dcstop">subpath</dfn>
+:: <dfn dfn-type="grammar" dfn-for="subpath">&lt;number> | all</dfn>
+:: If a number is given, that number is a zero based index to a sub-path of the path. (See dcPath seg command).  The default value is 'all'.
+: <dfn dfn-type="element-attr" dfn-for="dcstop">segment</dfn>
+:: <dfn dfn-type="grammar" dfn-for="segment">&lt;number> | all</dfn>
+:: If a number is given, that number is a zero based index to a segment of the path. (See dcPath seg command).  The default value is 'all'.
+: <dfn dfn-type="element-attr" dfn-for="dcstop">colors</dfn>
+:: <dfn dfn-type="grammar" dfn-for="segment">&lt;dc-constraint-set></dfn>
+
+<dfn dfn-type="interface" dfn-for="dcstop">dcStopElement</dfn> Interface.
+
+Note: Interface still to do.
+
+<h3 id='rendering_dcpatches'>Rendering Diffusion Curve Patches</h3>
+
+Note: This section describes our method of rendering diffusion cuves.
+This method is one of the fastest of the published methods, and has no known
+artefacts.
+This section is included to give an idea on how diffusion curves might be 
+rendererd, though other methods could also be used depending on the 
+conformance requirements (e.g. calculate a minimal surface by solving a
+Laplacian partial differential equation per color channel).
+
+<div class="example">
+Pixel types for the Constraint Pixel Image:
+
+<img src="examples/dc-render-grid.svg" width="400"/>
+
+* Blue - Curve Constraint Pixels. Pixels that lie on the diffusion curve path.
+* Cyan - Boundary Constraint Pixels. Pixels adjacent to at least one pixel
+    on the diffusion curve path.
+* Red - Unconstrained Pixels. Pixels away from the diffusion curve path. These
+    pixels will be coloured by the diffusion process.
+
+</div>
+
+<h4 id="render_overview">Overview of the rendering process </h4>
+<i>This section is not normative.</i>
+
+This diffusion curve rendering method, is based on the multi-grid method,
+with some improvements to avoid artefacts.
+
+The initial pixel buffer is initialised by rendering Curve Constraint Pixels
+and Boundary Constraint Pixels from the diffusion curve data.
+Pixels not touched during this step are unconstrained pixels - they have
+no value yet, but will be filled during the diffusion process.
+
+The diffusion process operates by downsampling to produce successively coarser versions
+of the initial pixel buffer, where the thickened constraints have expanded to
+fill the entire buffer. During this process, each down-sampled buffer is stored
+on the Processed Pixel Image Stack.
+
+Then, stepping back through the pixel buffers on the stack, the unconstrained
+pixels are filled by sampling from the previous, smaller, buffer.
+The filled unconstrained pixels in the pixel buffer are then smoothed, and if
+there are more buffers on the stack, the process is repeated.
+Otherwise, the smoothed image is the final rendered result.
+
+<h4 id="pixel_constraint_image">Generate Constraint Pixel Image</h4>
+1. Initialise a bitmap buffer of the desired width and height.
+2. Vectorise diffusion curves into straight line segments
+    to produce a data structure for each diffusion curve containing
+    the start and end point of the path and a list containing the start
+    point co-ordinate and left and right color specification for each 
+    segment.
+3. For each diffusion curve:
+    1. For each vectorised diffusion curve segment:
+        1. Trace the segment and for each pixel crossed, determine and 
+            store the Crossing Data:
+            1. The discrete pixel grid co-ordinate.
+            2. A fractional position indicating where the segment enters
+                and exits the pixel at the sub-pixel level.
+            3. The left and right colour value of the path segment at the
+                center of the pixel.
+        2. Add the Crossing Data to the set of all Crossing Data for that pixel.
+
+<h4 id="curve_constraint_pixels">Calculate pixel values for Curve Constraint Pixels</h4>
+4. For each pixel that has at least one Crossing Data entry
+    <!-- Calculate the composited color for all curve segments that influence
+        the pixel:-->
+    1. For each Crossing Data entry associated with the pixel
+        1. Calculate area of influence as a percentage of pixel coverage
+            for left and right hand sides
+    2. Combine all colours based on area of influence
+    3. Write pixel colour value to buffer
+
+<h4 id="boundary_constraint_pixels">Calculate pixel values for Boundary Constraint Pixels</h4>
+5. For each pixel that is not a Curve Constraint Pixel and is adjacent to
+    at least one Curve Constraint Pixel
+    1. For each of the eight directions around the pixel, identify the
+        closest Crossing Data entry in each adjacent pixel.
+    2. Calculate a colour value that is the average, weighted by distance, of
+        the colours of the identified Crossing Data entries.
+    3. Assign that colour value to the current pixel.
+
+<h4 id="downsample">Downsample and thicken constraints</h4>
+6. Set the Constraint Pixel Image to be the Current Pixel Image.
+7. While there are unconstrained pixels in the Current Pixel Image
+    1. For each unconstrained pixel that has a constrained pixel 
+        in any of the cardinal directions:
+        1. Calculate the average colour of the neighbouring constrained pixels.
+        2. Assign the calculated colour to the unconstrained pixel.
+        2. Mark pixel as thickened.
+    2. If there are remaining unconstrained pixels that have not been marked
+        as thickened:
+        1. Create a bitmap buffer, named the coarse pixel image,at half the
+            width and height of the Current Pixel Image.
+        2. For each pixel in the coarse pixel image (the destination pixel):
+            1. Identify the source pixel set as the pixels located at 
+                (2x, 2y), (2x+1,2y), (2x, 2y+1), (2x+1,2y+1)
+                in the Current Pixel Image.
+            2. If the source pixel set includes at least one constrained or
+                thickened pixel:
+                1. Initialise the destination pixel as the average of all
+                    constrained or thickened pixels in the source pixel set.
+                2. Mark the destination pixel as constrained.
+            3. Otherwise: Mark the destination pixel as unconstrained.
+        4. Push Current Pixel Image onto the Processed Pixel Image Stack.
+        5. Set the coarse pixel image as the Current Pixel Image.
+                
+<h4 id="upsample">Upsample with Laplacian smoothing for unconstrained pixels</h4>
+8. Begin loop:
+    1. Perform a multi-grid iteration method to smooth unconstrained and thickened
+        pixels of the Current Pixel Image.
+
+    2. If processed image stack is empty, exit loop.
+
+    3. Set Current Pixel Image as coarse pixel image.
+
+    4. Pop the top image off the processed image stack, set as current pixel
+        image.
+
+    5. For each unconstrained pixel in the Current Pixel Image:
+        1. Set source pixel as the pixel located at (floor(x/2),floor(y/2))
+            in the coarse pixel image, where (x,y) is the location of the
+            unconstrained pixel in the Current Pixel Image.
+        2. Set the colour of the unconstrained pixel as the colour of the
+            source pixel.
+
+9. Return Current Pixel Image as the final rendered result
+        
+<div class="example">
+Rendered Curve Constraint Pixels for the following diffusion curves.
+<pre>
+&lt;dcpath d="M0,6.5 C5,6.5 5.5,0 5.5 0" color-profile=" L <span style="color: #57BEC7">#57BEC7</span>, R <span style="color: #F3C110">#F3C110</span>" />
+&lt;dcpath d="M 3.3,5.6 L 6.5,9" color-profile=" L <span style="color: #E24B75">#E24B75</span>, R <span style="color: #57BEC7">#57BEC7</span>" />
+</pre>
+<img src="examples/dc-render-grid-3.svg#ccp_view" width="400"/>
+</div>
+
+<div class="example">
+
+Rendered Boundary Constraint Pixels for the diffusion curves of the previous
+example.
+
+<img src="examples/dc-render-grid-3.svg#bcp_view" width="400"/>
+</div>
+
+<div class="example">
+
+Final rendered result.
+
+<img src="examples/dc-render-grid-3.svg" width="400"/>
+</div>
+
+<div class="example">
+
+Snapshot images, taken during the rendering process.
+
+<img src="examples/render-steps.png"/>
+
+Left to right:
+1. Constraint pixel image after Curve Constraint Pixels rendered
+2. Constraint pixel image after Boundary Constraint Pixels rendered 
+3. Constraint pixel image set as Current Pixel Image and thickened.
+    note: this image is then pushed on to Processed Pixel Image Stack
+4. Coarse pixel image at first downsampling step (4px x 4px)
+5. Coarse pixel image thickened
+6. Current pixel image smoothed
+7. Pixel image popped off Processed Pixel Image Stack and set as current
+    pixel image, with unconstrained pixels coloured from course pixel image
+8. Current pixel image smoothed to give final rendered result
+
+</div>
+
+
+

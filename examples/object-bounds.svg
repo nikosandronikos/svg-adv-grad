@@ -1,0 +1,36 @@
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sbem="http://sbem.com.au"
+   viewBox="0 0 10 10"
+  >
+   <!--style="fill:none;stroke:#000000;stroke-width:0.01;font-family:sans-serif"-->
+    <rect x="1.763" y="1.195" width="7.237" height="7.619" stroke="black" stroke-width="0.01" fill="none" stroke-dasharray="0.1"/>
+    <path d="M9,5 L6.236,5.901 L6.236,8.804 L4.524,6.45 L1.763,7.35 L3.47,4.997 L1.763,2.648 L4.529,3.544 L6.236,1.195 L6.24,4.10 z" stroke-width="0.01" fill="none" stroke="black"/>
+
+    <circle cx="1.763" cy="1.195" r="0.1" fill="black"/>
+    <text x="1.963" y="1.395" font-size="0.1" fill="black" font-family="sans-serif">(0,0)</text>
+
+    <circle cx="9" cy="8.814" r="0.1" fill="black"/>
+    <text x="9.2" y="9.014" font-size="0.1" fill="black">(1,1)</text>
+
+    <rect x="1" y="1" width="8.5" height="8.5" stroke-width="0.01" stroke="blue" fill="none"/>
+    <circle cx="1" cy="1" r="0.1" fill="blue" stroke="none"/>
+    <text x="1.2" y="1.2" font-size="0.1" fill="blue">(0,0)</text>
+
+    <circle cx="9.5" cy="9.5" r="0.1" fill="blue" stroke="none"/>
+    <text x="9.7" y="9.7" font-size="0.1" fill="blue">(100,100)</text>
+    
+    <path d="M5,5 L9,5" fill="none" stroke="black" stroke-width="0.01"/>
+    <path d="M5,5 L6.236,8.804" fill="none" stroke="black" stroke-width="0.01"/>
+    <path d="M5,5 L1.763,7.35" fill="none" stroke="black" stroke-width="0.01"/>
+    <path d="M5,5 L1.763,2.648" fill="none" stroke="black" stroke-width="0.01"/>
+    <path d="M5,5 L6.236,1.195" fill="none" stroke="black" stroke-width="0.01"/>
+    
+    <path d="M5,5 6.236,5.901" fill="none" stroke="black" stroke-width="0.01"/>
+    <path d="M5,5 4.524,6.45" fill="none" stroke="black" stroke-width="0.01"/>
+    <path d="M5,5 3.47,4.997" fill="none" stroke="black" stroke-width="0.01"/>
+    <path d="M5,5 4.529,3.544" fill="none" stroke="black" stroke-width="0.01"/>
+    <path d="M5,5 6.24,4.10" fill="none" stroke="black" stroke-width="0.01"/>
+
+</svg>
+
