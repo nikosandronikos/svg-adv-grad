@@ -4,7 +4,7 @@ This is an unofficial draft proposal for supporting Diffusion Curves in SVG,
 produced by Canon Inc.
 
 The spec can be viewed here:
-http://cdn.rawgit.com/nikosandronikos/svg-adv-grad/master/index.html
+http://nikosandronikos.github.io/svg-adv-grad/
 
 ## Building
 Requires the Bikeshed spec preprocessor.
